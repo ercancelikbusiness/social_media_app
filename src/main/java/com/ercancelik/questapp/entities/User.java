@@ -5,6 +5,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 
+//entity - repos katmanından sonra
+// controllerda  mappingleri metodları vb yazarız sonra  bu metodu servicede  auto yaratırız servis jpa(repos) yı çağırcaktır 
+//servisi interface olarak kullanmazsan(manager sınıfsız) ve yazacağın metod içi jpa nın hazır kodunun dışına çıkıyorsa 
+//repos'ada metodu oluşturcaksın
+
+
+
 @Entity   // veritabanındaki bir tabloya maplenceğini söylüyor
 @Table(name="user")  //bu anotasyonları import ederken javax yerine jakarta kullanırız çünkü pom.xml de versiyon 3 lü olanlardayız yani
                      //spring boot 3x kullanıyoruz not: security bağımlılığı varsa postmanda istekler engellenebilir

@@ -33,6 +33,8 @@ public class UserController {
 		this.userService=userService;
 	}
 	
+	 //not: mapping anatasyonları altındaki metodu kapsıyor
+	
 	@GetMapping        // örneğin bu mappingde url yolu belirtilmemiş demekki localhost:8080/users yazıp get yapıcaz sadece
 	public List<User> getAllUsers() {     
 		return userService.getAllUsers();   //controllerin ilk halinde direk burda hazır metod vardı şimdi  önce servicedeki metoda yönlencez

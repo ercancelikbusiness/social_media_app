@@ -19,6 +19,8 @@ import lombok.Data;
 @Table(name="post")
 @Data
 
+//not: örneğin postmanda post oluşturmak için post isteği yapcaz  ( controllerda postmapping ) json body sine burdaki id user title fln girceksin
+
 public class Post {
 	
 	@Id
