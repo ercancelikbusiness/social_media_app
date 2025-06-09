@@ -17,8 +17,8 @@ import lombok.Data;
 
 //entity - repos katmanından sonra
 //controllerda  mappingleri metodları vb yazarız sonra  bu metodu servicede  auto yaratırız servis jpa(repos) yı çağırcaktır 
-//servisi interface olarak kullanmazsan(manager sınıfsız) ve yazacağın metod içi jpa nın hazır kodunun dışına çıkıyorsa 
-//repos'ada metodu oluşturcaksın
+//servisi interface olarak kullanmazsan(manager sınıfsız yani şuanki projemiz sonucta restful api yapmıyoruz ama  projemizde  rest api var) 
+//ve yazacağın metodun içi jpa nın hazır kodunun dışına çıkıyorsa repos'ada metodu oluşturcaksın
 
 @Entity
 @Table(name="comment")

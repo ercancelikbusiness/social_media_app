@@ -3,9 +3,11 @@ package com.ercancelik.questapp.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ercancelik.questapp.entities.Post;
 import com.ercancelik.questapp.requests.PostCreateRequest;
+import com.ercancelik.questapp.requests.PostUpdateRequest;
 import com.ercancelik.questapp.services.PostService;
 
 @RestController
@@ -36,6 +39,15 @@ public class PostController {
         return postService.getAllPosts(userId);
     }
 	
+
+	
+	@GetMapping("/{postId}")   // getAllPosts verilen şablonu parçalıyor bulup getiriyor burda direk postId veriliyor direk getircek
+	                           // ek bilgi mesela bu tarayıcı url'sinde  ..../posts?userId=1 şeklinde gözükür(istenen id 1 ise)
+	public Post getOnePost (@PathVariable Long  postId) {
+		return postService.getOnePostById(postId);
+		
+	}
+	
 	/*
 	@PostMapping
 	public Post createOnePost(@RequestBody Post newPost) { // fakat burda  komple bir json texti almamız gerekir yani post entitysinde 
@@ -50,11 +62,14 @@ public class PostController {
 		return postService.createOnePost(newPostRequest);
 	}
 	
-	@GetMapping("/{postId}")   // getAllPosts verilen şablonu parçalıyor bulup getiriyor burda direk postId veriliyor direk getircek
-	                           // ek bilgi mesela bu tarayıcı url'sinde  ..../posts?userId=1 şeklinde gözükür(istenen id 1 ise)
-	public Post getOnePost (@PathVariable Long  postId) {
-		return postService.getOnePostById(postId);
-		
+	@PutMapping("/{postId}")
+	public Post updateOnePost(@PathVariable Long postId, @RequestBody PostUpdateRequest updatePost) {   // postu update ederken userıd veya id sini update etmeyiz demekki ona göre metod yazcaz yani text ve title(bunları entity sınıfımıza göre alıyoruz unutma) almamız yeterli
+		return postService.updateOnePostById(postId,updatePost);
+	}
+	
+	@DeleteMapping("/{postId}")
+	public void deleteOnePost(@PathVariable Long postId) {
+		postService.deleteOnePostById(postId);
 	}
 	
 	
