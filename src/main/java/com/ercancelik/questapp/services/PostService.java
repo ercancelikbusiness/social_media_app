@@ -1,8 +1,12 @@
 package com.ercancelik.questapp.services;
 
+
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ercancelik.questapp.entities.Post;
@@ -10,6 +14,8 @@ import com.ercancelik.questapp.entities.User;
 import com.ercancelik.questapp.repos.PostRepository;
 import com.ercancelik.questapp.requests.PostCreateRequest;
 import com.ercancelik.questapp.requests.PostUpdateRequest;
+import com.ercancelik.questapp.responses.LikeResponse;
+import com.ercancelik.questapp.responses.PostResponse;
 
 @Service
 
@@ -17,12 +23,18 @@ public class PostService {
 	
 	private PostRepository postRepository;
 	private UserService userService;
+	private LikeService likeService;
 	
 	public PostService (PostRepository postRepository,UserService userService) {
 		this.postRepository=postRepository;
 		this.userService = userService;
 	}
-
+	@Autowired
+	public void setLikeService(LikeService likeService) {
+		this.likeService = likeService;
+	}
+	
+/*//frontend yapınca burayı değiştirdim
 	public List<Post> getAllPosts(Optional<Long> userId) {    // bunun açıklaması postRepository'de oku  !!!! çünkü burdaki tüm metodları
 															 // farkettiysen PostRepository'de tanımlamadık
 		if (userId.isPresent()) {
@@ -30,6 +42,17 @@ public class PostService {
         }
         return postRepository.findAll();
     }
+ */
+	public List<PostResponse> getAllPosts(Optional<Long> userId) {
+		List<Post> list;
+		if(userId.isPresent()) {
+			 list = postRepository.findByUserId(userId.get());
+		}else
+			list = postRepository.findAll();
+		return list.stream().map(p -> { 
+			List<LikeResponse> likes = likeService.getAllLikesWithParam(Optional.ofNullable(null), Optional.of(p.getId()));
+			return new PostResponse(p, likes);}).collect(Collectors.toList());
+	}
 
 	public Post getOnePostById(Long postId) {
 		return postRepository.findById(postId).orElse(null);
@@ -40,6 +63,11 @@ public class PostService {
 		return postRepository.save(newPost);
 	}
 */
+	public PostResponse getOnePostByIdWithLikes(Long postId) {
+		Post post = postRepository.findById(postId).orElse(null);
+		List<LikeResponse> likes = likeService.getAllLikesWithParam(Optional.ofNullable(null), Optional.of(postId));
+		return new PostResponse(post, likes); 
+	}
 
 	public Post createOnePost(PostCreateRequest newPostRequest) {  // bu metodda   gelen requestin içersindeki userıd databasede varmı  diye
 		//validation yapcaz bunuda user servisi kullanacağız yani bu servisde başka bir servise bağlanıcağız (repoyada bağlanabilirdik 
@@ -55,6 +83,7 @@ public class PostService {
 		toSave.setText(newPostRequest.getText());
 		toSave.setTitle(newPostRequest.getTitle());
 		toSave.setUser(user);
+		toSave.setCreateDate(new Date());
 		return postRepository.save(toSave);
 	}
 
@@ -80,7 +109,7 @@ public class PostService {
 	}
 
 	public void deleteOnePostById(Long postId) {
-		// TODO Auto-generated method stub
+		postRepository.deleteById(postId);
 		
 	}
 	

@@ -5,6 +5,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.ercancelik.questapp.entities.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+	
+	
+	
+	User findByUserName(String userName);
 
 }
 
@@ -12,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 /*	<User> : Entity (varlık) sınıfı	User tablo ismi ile aynı değil entity sınıfının ismiyle aynı olmalı
  * Entity'nin @Id ile işaretlenmiş alanının veri tipi	"Long"
  * */
+
+
  

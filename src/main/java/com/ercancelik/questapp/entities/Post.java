@@ -1,18 +1,26 @@
 package com.ercancelik.questapp.entities;
 
+
+
+import java.util.Date;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Data;
 
 @Entity
@@ -24,8 +32,9 @@ import lombok.Data;
 public class Post {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
-	@ManyToOne(fetch = FetchType.LAZY)   // postları atan bir user olur yani çok post bir user'a ait
+	@ManyToOne(fetch = FetchType.EAGER)   // postları atan bir user olur yani çok post bir user'a ait
 	@JoinColumn(name="user_id", nullable = false)   //veritabanı camelCase kodunu örn userId'yi user_id  olarak görüntüler demiştik bu ek bilgiyi hatırlayalım
 													// Burada post, user_id sütunu ile User tablosuna bağlanır.  ve user_id column u oluşturulur ama istersek @Column(name = "userName") yapıp veritabanındada öyle gösterebilirdik
 													//aynı zamanda foreign key'imiz user_id dir
@@ -38,7 +47,7 @@ public class Post {
 													
 	@OnDelete(action = OnDeleteAction.CASCADE)//bir user silindiğinde onun tüm postları silinmeli
 	
-	@JsonIgnore
+	
 	User user;   // postları atan bir user ise onu tanımlarız...
 	             // JPA  şunu der: "Ha, burada bir User nesnesi var. O zaman bu entity ile bir ilişki kurulacak demektir."
 	
@@ -52,5 +61,8 @@ public class Post {
 	@Lob
 	@Column(columnDefinition = "text")
 	String text;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	Date createDate;
 
 }

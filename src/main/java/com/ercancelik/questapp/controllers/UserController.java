@@ -1,16 +1,19 @@
 package com.ercancelik.questapp.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ercancelik.questapp.entities.User;
-import com.ercancelik.questapp.repos.UserRepository;
+import com.ercancelik.questapp.responses.UserResponse;
 import com.ercancelik.questapp.services.UserService;
 
 import java.util.List;
-import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,11 +27,93 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 //örneğin postmana localhost:8080/users yazıcaz aşağıdaki metodlara göre localhost:8080/users/... şeklinde arama yapcaz
 
-public class UserController {
+public class UserController {  // önce en alttaki yorum satırı olan usercontroller1 sonra  usercontroller2 sınıfını okuyabilirsin
 	
 	
-	private UserService userService;  // önce en alttaki yorum satırı olan controller sınıfının ilk halini oku sonra daha iyi anlarsın
 	
+private UserService userService;
+	
+	public UserController(UserService userService) {
+		this.userService = userService;
+	}
+	
+	@GetMapping
+	public List<UserResponse> getAllUsers(){
+		return userService.getAllUsers().stream().map(u -> new UserResponse(u)).toList();
+	}
+	
+	@PostMapping
+	public ResponseEntity<Void> createUser(@RequestBody User newUser) {
+		User user = userService.saveOneUser(newUser);
+		if(user != null) 
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@GetMapping("/{userId}")
+	public UserResponse getOneUser(@PathVariable Long userId) {
+		User user = userService.getOneUserById(userId);
+		if(user == null) {
+			throw new UserNotFoundException();
+		}
+		return new UserResponse(user);
+	}
+	
+	@PutMapping("/{userId}")
+	public ResponseEntity<Void> updateOneUser(@PathVariable Long userId, @RequestBody User newUser) {
+		User user = userService.updateOneUser(userId, newUser);
+		if(user != null) 
+			return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+	}
+	
+	@DeleteMapping("/{userId}")
+	public void deleteOneUser(@PathVariable Long userId) {
+		userService.deleteById(userId);
+	}
+	
+	@GetMapping("/activity/{userId}")
+	public List<Object> getUserActivity(@PathVariable Long userId) {
+		return userService.getUserActivity(userId);
+	}
+	
+	@ExceptionHandler(UserNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	private void handleUserNotFound() {
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/* (2)
+	private UserService userService; 
 	public UserController(UserService userService) {
 		this.userService=userService;
 	}
@@ -64,6 +149,7 @@ public class UserController {
 	    userService.deleteById(userId);
 	}
 	
+	*/
 	
 	
 	
@@ -74,8 +160,7 @@ public class UserController {
 	
 	
 	
-	
-	/*
+	/*// (1)
 	private UserRepository userRepository;  
 	
 	public UserController(UserRepository userRepository) {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ercancelik.questapp.entities.Post;
 import com.ercancelik.questapp.requests.PostCreateRequest;
 import com.ercancelik.questapp.requests.PostUpdateRequest;
+import com.ercancelik.questapp.responses.PostResponse;
 import com.ercancelik.questapp.services.PostService;
 
 @RestController
@@ -33,19 +34,23 @@ public class PostController {
 		this.postService = postService;
 	}
 	
-	
+/*	//frontend yapılınca burayı değiştirdim
 	@GetMapping  //not: mapping anatasyonları altındaki metodu kapsıyor
     public List<Post> getAllPosts(@RequestParam Optional<Long> userId) {  // request param bize gelen requestin içerisindeki parametreleri pars et ve sağında bulunan
 																		//değişkenin içine at  yani düzenliyor springboot.. yani bu optional bir parametre geledebilir gelmeyedebilir gelirse userId ye göre postları getircek gelmezse /posts u çağırcak yani tüm postları getircek
         return postService.getAllPosts(userId);
     }
-	
+*/	
+	@GetMapping
+	public List<PostResponse> getAllPosts(@RequestParam Optional<Long> userId) {
+		return postService.getAllPosts(userId);
+	}
 
 	
 	@GetMapping("/{postId}")   // getAllPosts verilen şablonu parçalıyor bulup getiriyor burda direk postId veriliyor direk getircek
 	                           // ek bilgi mesela bu tarayıcı url'sinde  ..../posts?userId=1 şeklinde gözükür(istenen id 1 ise)
-	public Post getOnePost (@PathVariable Long  postId) {
-		return postService.getOnePostById(postId);
+	public PostResponse  getOnePost (@PathVariable Long  postId) {
+		return postService.getOnePostByIdWithLikes(postId);
 		
 	}
 	

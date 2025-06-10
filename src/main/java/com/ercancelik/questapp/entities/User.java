@@ -1,6 +1,8 @@
 package com.ercancelik.questapp.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -26,9 +28,11 @@ import lombok.Data;
 public class User {
 	
 	@Id               // id veritabanındaki tablonun birincil anahtarıdır. demektir benzersiz tanımlanacak demektir
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	String userName;  // bu bir sütün  veritabanı sütünlarında javadaki camelCase yazımlar user_name şeklinde gözükür
 	String password;
+	int avatar;
 	
 	
 	
