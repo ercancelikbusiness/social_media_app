@@ -51,7 +51,7 @@ public class UserController {
 	@GetMapping("/{userId}")   // burda postmanda  localhost:8080/users/1 gibi yazcaz sondaki id olcak 
 	public User getOneUser(@PathVariable Long userId) {
 	    // custom exception
-	    return userService.getOneUser(userId);
+	    return userService.getOneUserById(userId);
 	}
 
 	@PutMapping("/{userId}")

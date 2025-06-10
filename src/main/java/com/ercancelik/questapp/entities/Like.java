@@ -17,6 +17,8 @@ import lombok.Data;
 @Table(name="p_like")
 @Data
 
+
+// burda Like daki alanlar id- post_id -user_id    bu 3 ü veritabanında gözükür tabloda. atıyorum string abc olsa oda gozukurdu
 public class Like {
 
 	@Id

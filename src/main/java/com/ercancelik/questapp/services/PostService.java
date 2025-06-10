@@ -47,7 +47,7 @@ public class PostService {
 		// requests paketine göre postcreaterequest teki alanları  json body si olarak postlayabiliriz
 		//ve  gönderince  postman dönütünde ilgisiz user alanı çıkmadı ancak veritabanındaki tabloya tam yerleşme yapıldı mesela userId yi
 		//tanımladı
-		User user = userService.getOneUser(newPostRequest.getUserId());
+		User user = userService.getOneUserById(newPostRequest.getUserId());
 		if(user == null)
 			return null;
 		Post toSave = new Post();

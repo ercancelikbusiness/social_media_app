@@ -21,7 +21,8 @@ import com.ercancelik.questapp.services.PostService;
 @RestController
 @RequestMapping("/posts")
 
-
+// özet RequestParam ?userId=1   şeklinde requestBody xml json requestVariable mappingde {} olcak   /2  gibi
+//kısaca  bunlar kodda anlaşılsada teorik olarak araştır.
 
 public class PostController {
 	

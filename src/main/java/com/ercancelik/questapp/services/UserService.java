@@ -28,14 +28,14 @@ public class UserService {
 		return userRepository.save(newUser);  //body'e yazılan kullanıcı(json doğru formatında) eklenmiş olacak yani burda dışardan alcaz
 	}
 
-	public User getOneUser(Long userId) {
+	public User getOneUserById(Long userId) {
 		return userRepository.findById(userId).orElse(null);
 	}
 
 	public User updateOneUser(Long userId, User newUser) {
 	    Optional<User> user = userRepository.findById(userId);
 	    if(user.isPresent()) {
-	        User foundUser = user.get();
+	        User foundUser = user.get(); // optionaldan gelen get() metodur açıklaması PostServicedeki updateOnePostById metodunda mevcut
 	        foundUser.setUserName(newUser.getUserName());
 	        foundUser.setPassword(newUser.getPassword());
 	        userRepository.save(foundUser);
