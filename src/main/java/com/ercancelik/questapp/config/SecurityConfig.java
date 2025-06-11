@@ -34,6 +34,9 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
         this.handler = handler;
     }
+    
+   
+ 
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {

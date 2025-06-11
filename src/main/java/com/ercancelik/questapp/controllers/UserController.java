@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ercancelik.questapp.entities.User;
+import com.ercancelik.questapp.exceptions.UserNotFoundException;
 import com.ercancelik.questapp.responses.UserResponse;
 import com.ercancelik.questapp.services.UserService;
 
